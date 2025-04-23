@@ -135,8 +135,8 @@ export default class Mosaic extends Plugin {
   }
 
   onDraw = (drawEventParams: DrawEventParams) => {
-    const {stage, drawLayer, paramValue} = drawEventParams
-    const pos = stage.getPointerPosition()
+    const {drawLayer, paramValue} = drawEventParams
+    const pos = drawLayer.getRelativePointerPosition()
     if (!this.isPaint || !pos) return
 
     const strokeWidth = (paramValue && paramValue.strokeWidth) ? paramValue.strokeWidth : this.defaultParamValue.strokeWidth

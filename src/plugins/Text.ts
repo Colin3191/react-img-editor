@@ -46,19 +46,19 @@ export default class Text extends Plugin {
     textareaBlurModal.addEventListener('click', this.removeTextareaBlurModal)
   }
 
-  createTextarea = (stage: any, drawLayer: any, transformer: any, textNode: any, pubSub: PubSub) => {
+  createTextarea = (stage: Konva.Stage, drawLayer: Konva.Layer, transformer: Konva.Transformer, textNode: Konva.Text, pubSub: PubSub) => {
     const textarea = document.createElement('textarea')
     textarea.value = textNode.text()
     textarea.style.position = 'absolute'
-    textarea.style.left = textNode.x() + 'px'
-    textarea.style.top = textNode.y() + 'px'
+    textarea.style.left = textNode.getAbsolutePosition().x + 'px'
+    textarea.style.top = textNode.getAbsolutePosition().y + 'px'
     textarea.style.width = textNode.width() + 'px'
     textarea.style.height = textNode.height() + 'px'
     textarea.style.lineHeight = String(textNode.lineHeight())
     textarea.style.padding = textNode.padding() + 'px'
     textarea.style.margin = '0px'
     textarea.style.fontSize = textNode.fontSize() + 'px'
-    textarea.style.color = textNode.fill()
+    textarea.style.color = textNode.fill() as string
     textarea.style.fontFamily = textNode.fontFamily()
     textarea.style.border = 'none'
     textarea.style.outline = 'none'
@@ -173,7 +173,7 @@ export default class Text extends Plugin {
 
     const fontSize = (paramValue && paramValue.fontSize) ? paramValue.fontSize : this.defaultParamValue.fontSize
     const color = (paramValue && paramValue.color) ? paramValue.color : this.defaultParamValue.color
-    const startPos = stage.getPointerPosition()
+    const startPos = drawLayer.getRelativePointerPosition()
 
     if (!startPos) return
 

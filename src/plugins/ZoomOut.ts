@@ -11,26 +11,26 @@ export default class ZoomOut extends Plugin {
   } as PluginParamValue
 
   onEnter = (drawEventParams: DrawEventParams) => {
-    const {imageLayer, imageElement, paramValue} = drawEventParams
+    const {stage, paramValue} = drawEventParams
 
     const zoomRatio = (paramValue && paramValue.zoomRatio) ? paramValue.zoomRatio : this.defaultParamValue.zoomRatio || 0
 
-    imageElement.scale({
-      x: imageElement.scaleX() * (1 - zoomRatio),
-      y: imageElement.scaleY() * (1 - zoomRatio),
+    stage.scale({
+      x: stage.scaleX() * (1 - zoomRatio),
+      y: stage.scaleY() * (1 - zoomRatio),
     })
 
-    imageElement.x(imageElement.width() / 2)
-    imageElement.y(imageElement.height() / 2)
-    imageElement.offsetX(imageElement.width() / 2)
-    imageElement.offsetY(imageElement.height() / 2)
-    imageElement.draggable(true)
-    imageLayer.draw()
+    stage.x(stage.width() / 2)
+    stage.y(stage.height() / 2)
+    stage.offsetX(stage.width() / 2)
+    stage.offsetY(stage.height() / 2)
+    stage.draggable(true)
+    stage.draw()
   }
 
   onLeave = (drawEventParams: DrawEventParams) => {
-    const {imageLayer, imageElement} = drawEventParams
-    imageElement.draggable(false)
-    imageLayer.draw()
+    const {stage} = drawEventParams
+    stage.draggable(false)
+    stage.draw()
   }
 }

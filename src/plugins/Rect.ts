@@ -102,10 +102,10 @@ export default class Rect extends Plugin {
   }
 
   onDraw = (drawEventParams: DrawEventParams) => {
-    const {stage, drawLayer, paramValue, pubSub} = drawEventParams
-    const pos = stage.getPointerPosition()
-
+    const {drawLayer, paramValue, pubSub} = drawEventParams
+    const pos = drawLayer.getRelativePointerPosition()
     if (!this.isPaint || this.transformer || !pos) return
+
 
     if (!this.started) {
       this.startPoint = [pos.x, pos.y]

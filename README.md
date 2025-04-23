@@ -1,6 +1,13 @@
 # react-img-editor · 图像编辑器
 
-> 注意：这是从 [react-img-editor](https://github.com/yaokailun/react-img-editor) fork 的临时版本，包含了一个 bug 修复。建议等待原仓库合并 PR 后使用原仓库版本。
+> 注意：这是从 [react-img-editor](https://github.com/yaokailun/react-img-editor) fork 的临时版本，相比原版有以下改进：
+> 
+> - 功能增强：
+>   - 添加全局缩放功能，包括图片和所有编辑图层一起缩放
+>   - 缩放功能默认开启，无需额外配置
+> 
+> - Bug 修复：
+>   - 修复了缩小后下载图片显示不全的问题
 
 ![](https://img.shields.io/npm/v/react-img-editor.svg) ![](https://img.shields.io/npm/dw/react-img-editor.svg)
 

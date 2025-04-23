@@ -18,8 +18,8 @@ export default class Pen extends Plugin {
   isPaint = false
 
   onDrawStart = (drawEventParams: DrawEventParams) => {
-    const {stage, drawLayer, paramValue} = drawEventParams
-    const pos = stage.getPointerPosition()
+    const {drawLayer, paramValue} = drawEventParams
+    const pos = drawLayer.getRelativePointerPosition()
 
     if (!pos) return
 
@@ -40,8 +40,8 @@ export default class Pen extends Plugin {
   }
 
   onDraw = (drawEventParams: DrawEventParams) => {
-    const {stage, drawLayer} = drawEventParams
-    const pos = stage.getPointerPosition()
+    const {drawLayer} = drawEventParams
+    const pos = drawLayer.getRelativePointerPosition()
 
     if (!this.isPaint || !pos) return
 

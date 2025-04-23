@@ -26,7 +26,7 @@ export default function ReactImageEditor(props: ReactImageEditorProps) {
 
   const pluginFactory = new PluginFactory()
   const plugins = [...pluginFactory.plugins, ...props.plugins!]
-  let defaultPlugin = null
+  let defaultPlugin: Plugin | null = null
   let defaultParamValue = {}
   for(let i = 0; i < plugins.length; i++) {
     if (props.defaultPluginName && props.toolbar && plugins[i].name === props.defaultPluginName) {
@@ -129,6 +129,6 @@ ReactImageEditor.defaultProps = {
   style: {},
   plugins: [],
   toolbar: {
-    items: ['pen', 'eraser', 'arrow', 'rect', 'circle', 'mosaic', 'text', '|', 'repeal', 'download', 'crop'],
+    items: ['pen', 'eraser', 'arrow', 'rect', 'circle', 'mosaic', 'text', '|', 'repeal', 'download', 'crop', '|', 'zoomIn', 'zoomOut'],
   },
 } as Partial<ReactImageEditorProps>
