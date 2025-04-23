@@ -1,6 +1,6 @@
 {
-  "name": "react-img-editor",
-  "version": "0.2.2",
+  "name": "@colin3191/react-img-editor",
+  "version": "1.0.0-beta.2",
   "description": "图片编辑器（微信截图编辑 PRO 版）",
   "keywords": [
     "react-img-editor",
@@ -23,7 +23,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/YaoKaiLun/react-img-editor.git"
+    "url": "git+https://github.com/Colin3191/react-img-editor.git"
   },
   "author": "kailunyao",
   "license": "MIT",
