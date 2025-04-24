@@ -204,7 +204,10 @@ function Example() {
     crossOrigin: "anonymous",
     toolbar: {
       items: ['pen', 'eraser', 'arrow', 'rect', 'circle', 'mosaic', 'text', '|', 'repeal', 'download', 'crop', '|', 'zoomIn', 'zoomOut']
-    }
+    },
+    zoomRatio: 0.05,
+    draggable: true,
+    enableZoom: true
   }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     style: {
       marginTop: '50px'
