@@ -6,8 +6,6 @@
 >   - 添加全局缩放功能，包括图片和所有编辑图层一起缩放
 >   - 缩放功能默认开启，无需额外配置
 > 
-> - Bug 修复：
->   - 修复了缩小后下载图片显示不全的问题
 
 ![](https://img.shields.io/npm/v/react-img-editor.svg) ![](https://img.shields.io/npm/dw/react-img-editor.svg)
 
@@ -53,6 +51,9 @@ import 'react-img-editor/assets/index.css'
 | getStage | 获取 KonvaJS 的 [Stage](https://konvajs.org/api/Konva.Stage.html) 对象，可用于下载图片等操作 | (stage: any) => void |
 | defaultPluginName | 默认选中的插件名称 | string? | - |
 | crossOrigin | 处理跨域图片 | string? | - |
+| zoomRatio | 缩放比例 | number | 0.05 |
+| enableZoom | 是否启用缩放功能 | boolean | false |
+| draggable | 是否允许拖拽 | boolean | false |
 
 
 ## 📝 TODO

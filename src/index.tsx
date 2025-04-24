@@ -1,7 +1,7 @@
 import Plugin from './plugins/Plugin'
 import PluginFactory from './plugins/PluginFactory'
 import Palette from './components/Palette'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import Toolbar from './components/Toolbar'
 import { PluginParamValue } from './common/type'
 import { EditorContext } from './components/EditorContext'
@@ -18,6 +18,9 @@ interface ReactImageEditorProps {
   getStage?: (stage: any) => void;
   defaultPluginName?: string;
   crossOrigin?: string;
+  zoomRatio: number;
+  enableZoom: boolean;
+  draggable: boolean;
 }
 
 export default function ReactImageEditor(props: ReactImageEditorProps) {
@@ -43,6 +46,13 @@ export default function ReactImageEditor(props: ReactImageEditorProps) {
   const [currentPlugin, setCurrentPlugin] = useState<Plugin | null>(defaultPlugin)
   const [paramValue, setParamValue] = useState<PluginParamValue>(defaultParamValue)
 
+  const draggable = useMemo(() => {
+    if (currentPlugin) {
+      return false
+    }
+    return props.draggable
+  }, [currentPlugin, props.draggable])
+
   // 生成默认 toolbarItemConfig
   const config: any = {}
   plugins.map(plugin => {
@@ -66,8 +76,16 @@ export default function ReactImageEditor(props: ReactImageEditorProps) {
     image.src = props.src
   }, [props.src, props.crossOrigin])
 
-  function handlePluginChange(plugin: Plugin) {
-    setCurrentPlugin(plugin)
+  function handlePluginChange(plugin: Plugin, toggle = false) {
+    setCurrentPlugin(prev => {
+      if (!toggle) {
+        return plugin
+      }
+      if (prev?.name === plugin.name) {
+        return null
+      }
+      return plugin
+    })
     plugin.defaultParamValue && setParamValue(plugin.defaultParamValue)
     if (plugin.disappearImmediately === true) {
       setTimeout(() => {
@@ -103,6 +121,9 @@ export default function ReactImageEditor(props: ReactImageEditorProps) {
         handlePluginParamValueChange,
         toolbarItemConfig,
         updateToolbarItemConfig,
+        zoomRatio: props.zoomRatio,
+        enableZoom: props.enableZoom,
+        draggable: draggable,
       }}
     >
       <div className="react-img-editor" style={style}>
@@ -131,4 +152,7 @@ ReactImageEditor.defaultProps = {
   toolbar: {
     items: ['pen', 'eraser', 'arrow', 'rect', 'circle', 'mosaic', 'text', '|', 'repeal', 'download', 'crop', '|', 'zoomIn', 'zoomOut'],
   },
+  zoomRatio: 0.05,
+  enableZoom: false,
+  draggable: false,
 } as Partial<ReactImageEditorProps>

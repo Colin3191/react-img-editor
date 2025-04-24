@@ -9,6 +9,7 @@ export default class ZoomIn extends Plugin {
   defaultParamValue = {
     zoomRatio: 0.2,
   } as PluginParamValue
+  disappearImmediately = true
 
   onEnter = (drawEventParams: DrawEventParams) => {
     const {stage, paramValue} = drawEventParams
@@ -25,14 +26,12 @@ export default class ZoomIn extends Plugin {
     stage.offsetX(stage.width() / 2)
     stage.offsetY(stage.height() / 2)
 
-    stage.draggable(true)
 
     stage.draw()
   }
 
   onLeave = (drawEventParams: DrawEventParams) => {
     const { stage } = drawEventParams
-    stage.draggable(false)
     stage.draw()
   }
 }

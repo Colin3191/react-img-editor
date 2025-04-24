@@ -11,11 +11,14 @@ export interface EditorContextProps {
     items: string[];
   };
   currentPlugin: Plugin | null;
-  handlePluginChange: (plugin: Plugin) => void;
+  handlePluginChange: (plugin: Plugin, toggle?: boolean) => void;
   paramValue: PluginParamValue | null;
   handlePluginParamValueChange: (paramValue: PluginParamValue) => void;
   toolbarItemConfig: any;
   updateToolbarItemConfig: (config: any) => void;
+  zoomRatio: number;
+  enableZoom: boolean;
+  draggable: boolean;
 }
 
 export const EditorContext = React.createContext({} as EditorContextProps)

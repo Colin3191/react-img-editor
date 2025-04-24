@@ -75,6 +75,10 @@ class Palette extends React.Component<PaletteProps> {
         }
       }
     }
+
+    if (this.stage) {
+      this.stage.draggable(this.props.draggable)
+    }
   }
 
   componentWillUnmount() {
@@ -112,6 +116,9 @@ class Palette extends React.Component<PaletteProps> {
     this.drawLayer = new Konva.Layer()
     this.stage.add(this.drawLayer)
     this.bindEvents()
+    if (this.props.draggable) {
+      this.stage.draggable(true)
+    }
   }
 
   // 裁剪等操作执行后需要重新初始化
@@ -166,7 +173,7 @@ class Palette extends React.Component<PaletteProps> {
 
     const { plugins, currentPlugin, handlePluginChange } = this.props
     this.removeEvents()
-    this.stage.add(this.drawLayer)
+    // this.stage.add(this.drawLayer)
     this.drawLayer.setZIndex(1)
 
     this.stage.on('click tap', (e: any) => {
@@ -181,7 +188,7 @@ class Palette extends React.Component<PaletteProps> {
                 plugins[i].onClick && plugins[i].onClick!(this.getDrawEventParams(event))
               })
             })(e)
-            handlePluginChange(plugins[i])
+            handlePluginChange(plugins[i], false)
             return
           }
         }
@@ -209,6 +216,41 @@ class Palette extends React.Component<PaletteProps> {
         currentPlugin.onDrawEnd(this.getDrawEventParams(e))
       }
     })
+
+
+    this.stage.on('wheel', (e) => {
+      if (!this.props.enableZoom || !this.stage) return
+      // stop default scrolling
+      e.evt.preventDefault()
+
+      const oldScale = this.stage.scaleX()
+      const pointer = this.stage.getPointerPosition()
+      if(!pointer) return
+
+      const mousePointTo = {
+        x: (pointer.x - this.stage.x()) / oldScale,
+        y: (pointer.y - this.stage.y()) / oldScale,
+      }
+
+      // how to scale? Zoom in? Or zoom out?
+      let direction = e.evt.deltaY > 0 ? 1 : -1
+
+      // when we zoom on trackpad, e.evt.ctrlKey is true
+      // in that case lets revert direction
+      if (e.evt.ctrlKey) {
+        direction = -direction
+      }
+
+      const newScale = direction > 0 ? oldScale * (1 + this.props.zoomRatio) : oldScale / (1 + this.props.zoomRatio)
+
+      this.stage.scale({ x: newScale, y: newScale })
+
+      const newPos = {
+        x: pointer.x - mousePointTo.x * newScale,
+        y: pointer.y - mousePointTo.y * newScale,
+      }
+      this.stage.position(newPos)
+    })
   }
 
   removeEvents = () => {
@@ -218,6 +260,7 @@ class Palette extends React.Component<PaletteProps> {
     this.stage.off('mousedown touchstart')
     this.stage.off('mousemove touchmove')
     this.stage.off('mouseup touchend')
+    this.stage.off('wheel')
   }
 
   subHistoryStack = () => {
@@ -271,6 +314,9 @@ class Palette extends React.Component<PaletteProps> {
       historyStack: this.historyStack,
       pixelRatio: this.pixelRatio,
       pubSub: this.pubSub,
+      zoomRatio: props.zoomRatio,
+      enableZoom: props.enableZoom,
+      draggable: props.draggable,
       // editor context
       containerWidth: props.containerWidth,
       containerHeight: props.containerHeight,

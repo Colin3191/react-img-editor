@@ -38,6 +38,9 @@ function Example() {
           items: ['pen', 'eraser', 'arrow', 'rect', 'circle', 'mosaic', 'text', '|', 'repeal', 'download', 'crop',
             '|', 'zoomIn', 'zoomOut'],
         }}
+        zoomRatio={0.05}
+        draggable
+        enableZoom
       />
       <div style={{ marginTop: '50px' }}>
         <button onClick={downloadImage}>download</button>

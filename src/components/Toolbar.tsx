@@ -31,7 +31,7 @@ export default function Toolbar() {
           key={plugin.name}
           className={`${prefixCls}-toolbar-icon ${isActivated ? 'activated' : ''} ${isDisabled ? 'disabled' : ''}`}
         >
-          <i title={plugin.title} className={plugin.iconfont} onClick={() => handlePluginChange(plugin)} />
+          <i title={plugin.title} className={plugin.iconfont} onClick={() => handlePluginChange(plugin, true)} />
         </span>
       )
     }
@@ -55,7 +55,7 @@ export default function Toolbar() {
           key={plugin.name}
           className={`${prefixCls}-toolbar-icon ${isActivated ? 'activated' : ''} ${isDisabled ? 'disabled' : ''}`}
         >
-          <i title={plugin.title} className={plugin.iconfont} onClick={() => handlePluginChange(plugin)} />
+          <i title={plugin.title} className={plugin.iconfont} onClick={() => handlePluginChange(plugin, true)} />
         </span>
       </Tooltip>
     )

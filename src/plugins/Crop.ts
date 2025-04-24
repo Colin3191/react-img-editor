@@ -14,10 +14,11 @@ export default class Crop extends Plugin {
   params = []
 
   isPaint = false
-  virtualLayer: any = null
-  rect: any = null
-  transformer: any = null
+  virtualLayer: Konva.Layer | null = null
+  rect: Konva.Rect | null = null
+  transformer: Konva.Transformer | null = null
   toolbarId = 'react-img-editor-crop-toolbar' + uuid()
+  startPoint = [0, 0]
 
   // 一直为正数
   getRectWidth = () => {
@@ -130,13 +131,14 @@ export default class Crop extends Plugin {
   }
 
   onDrawStart = (drawEventParams: DrawEventParams) => {
-    const {stage} = drawEventParams
-    const startPos = stage.getPointerPosition()
+    const {stage,drawLayer} = drawEventParams
+    const startPos = drawLayer.getRelativePointerPosition()
     // 当鼠标移出 stage 时，不会触发 mouseup，重新回到 stage 时，会重新触发 onDrawStart，这里就是为了防止重新触发 onDrawStart
     if (this.isPaint || !startPos) return
 
     if (document.getElementById(this.toolbarId)) return
     this.isPaint = true
+    this.startPoint = [startPos.x, startPos.y]
 
     this.virtualLayer = new Konva.Layer()
     stage.add(this.virtualLayer)
@@ -160,6 +162,23 @@ export default class Crop extends Plugin {
       fill: '#FFF',
       draggable: true,
       globalCompositeOperation: 'destination-out',
+      dragBoundFunc: (pos) => {
+        this.adjustToolbarPosition(stage)
+        let { x, y } = pos
+        if (x < 0) {
+          x = 0
+        }
+        if (y < 0) {
+          y = 0
+        }
+        if(x + this.rect!.getClientRect()!.width > stage.width()) {
+          x = stage.width() - this.rect!.getClientRect()!.width
+        }
+        if(y + this.rect!.getClientRect()!.height > stage.height()) {
+          y = stage.height() - this.rect!.getClientRect()!.height
+        }
+        return { x, y }
+      },
     })
     this.rect.on('mouseenter', function() {
       stage.container().style.cursor = 'move'
@@ -174,40 +193,17 @@ export default class Crop extends Plugin {
   }
 
   onDraw = (drawEventParams: DrawEventParams) => {
-    const {stage} = drawEventParams
-    const endPos = stage.getPointerPosition()
+    const {drawLayer} = drawEventParams
+    const endPos = drawLayer.getRelativePointerPosition()
 
     if (!this.isPaint || !endPos) return
     if (document.getElementById(this.toolbarId)) return
-
     // 绘制初始裁剪区域
-    this.rect.width(endPos.x - this.getRectX())
-    this.rect.height(endPos.y - this.getRectY())
-    this.rect.dragBoundFunc((pos: any) => {
-      let x = pos.x
-      let y = pos.y
+    this.rect!.width(endPos.x - this.startPoint[0])
+    this.rect!.height(endPos.y - this.startPoint[1])
 
-      if (this.transformer.width() >= 0) {
-        if (pos.x <= 0) x = 0
-        if (pos.x >= stage.width() - this.transformer.width()) x = stage.width() - this.transformer.width()
-      } else {
-        if (pos.x >= stage.width()) x = stage.width()
-        if (pos.x <= - this.transformer.width()) x = - this.transformer.width()
-      }
 
-      if (this.transformer.height() >= 0) {
-        if (pos.y <= 0) y = 0
-        if (pos.y >= stage.height() - this.transformer.height()) y = stage.height() - this.transformer.height()
-      } else {
-        if (pos.y >= stage.height()) y = stage.height()
-        if (pos.y <= - this.transformer.height()) y = - this.transformer.height()
-      }
-
-      this.adjustToolbarPosition(stage)
-      return {x, y}
-    })
-
-    this.virtualLayer.draw()
+    this.virtualLayer!.draw()
   }
 
   onDrawEnd = (drawEventParams: DrawEventParams) => {
@@ -222,68 +218,22 @@ export default class Crop extends Plugin {
 
     // 允许改变裁剪区域
     this.transformer = new Konva.Transformer({
-      node: this.rect,
+      node: this.rect!,
       ...transformerStyle,
-      boundBoxFunc: (oldBox: any, newBox: any) => {
-        let x = newBox.x
-        let y = newBox.y
-        let width = newBox.width
-        let height = newBox.height
-
-        if (newBox.width >= 0) {
-          if (newBox.x <= 0) {
-            x = 0
-            width = newBox.width + newBox.x
-          }
-
-          if (newBox.x >= stage.width() - newBox.width) {
-            width = stage.width() - oldBox.x
-          }
-        } else {
-          if (newBox.x >= stage.width()) {
-            x = stage.width()
-            width = newBox.width + (newBox.x - stage.width())
-          }
-
-          if (newBox.x <= - newBox.width) {
-            width = - oldBox.x
-          }
-        }
-
-        if (newBox.height >= 0) {
-          if (newBox.y <= 0) {
-            y = 0
-            height = newBox.height + newBox.y
-          }
-
-          if (newBox.y >= stage.height() - newBox.height) {
-            height = stage.height() - oldBox.y
-          }
-        } else {
-          if (newBox.y >= stage.height()) {
-            y = stage.height()
-            height = newBox.height + (newBox.y - stage.height())
-          }
-
-          if (newBox.y <= - newBox.height) {
-            height = - oldBox.y
-          }
-        }
-
-
+      boundBoxFunc: (oldBox, newBox) => {
         this.adjustToolbarPosition(stage)
-        return {x, y, width, height} as any
+        return newBox
       },
     })
-    this.virtualLayer.add(this.transformer)
-    this.virtualLayer.draw()
+    this.virtualLayer!.add(this.transformer)
+    this.virtualLayer!.draw()
 
     this.createCropToolbar(stage, () => {
       // 裁剪区域太小不允许裁剪
       if (this.getRectWidth() < 2 || this.getRectHeight() < 2) return
 
       // 提前清除拉伸框
-      this.virtualLayer.remove(this.transformer)
+      this.virtualLayer!.remove()
       const dataURL = stage.toDataURL({
         x: this.getRectX(),
         y: this.getRectY(),
