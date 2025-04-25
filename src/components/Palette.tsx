@@ -206,8 +206,8 @@ class Palette extends React.Component<PaletteProps> {
     })
 
     this.stage.on('mousemove touchmove', (e: any) => {
-      if (currentPlugin && currentPlugin.onDraw) {
-        currentPlugin.onDraw(this.getDrawEventParams(e))
+      if (this.props.currentPlugin && this.props.currentPlugin.onDraw) {
+        this.props.currentPlugin.onDraw(this.getDrawEventParams(e))
       }
     })
 
