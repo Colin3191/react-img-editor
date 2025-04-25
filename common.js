@@ -48015,8 +48015,8 @@ var Palette = /*#__PURE__*/function (_React$Component) {
         }
       });
       _this.stage.on('mousemove touchmove', function (e) {
-        if (currentPlugin && currentPlugin.onDraw) {
-          currentPlugin.onDraw(_this.getDrawEventParams(e));
+        if (_this.props.currentPlugin && _this.props.currentPlugin.onDraw) {
+          _this.props.currentPlugin.onDraw(_this.getDrawEventParams(e));
         }
       });
       _this.stage.on('mouseup touchend', function (e) {
