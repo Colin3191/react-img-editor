@@ -39,7 +39,7 @@ export default class Download extends Plugin {
         link.download = '';
         link.href = URL.createObjectURL(blob);
         link.click();
-      }, 'image/jpeg');
+      }, 'image/png');
     }, 100);
   };
 }

@@ -11,24 +11,35 @@ export default class ZoomIn extends Plugin {
   disappearImmediately = true;
 
   onEnter = (drawEventParams: DrawEventParams) => {
-    const { stage, paramValue } = drawEventParams;
+    const { paramValue, imageLayer, drawLayer } = drawEventParams;
 
     const zoomRatio =
       paramValue && paramValue.zoomRatio
         ? paramValue.zoomRatio
         : this.defaultParamValue.zoomRatio || 0;
 
-    stage.scale({
-      x: stage.scaleX() * (1 + zoomRatio),
-      y: stage.scaleY() * (1 + zoomRatio),
+    const scaleX = imageLayer.scaleX() * (1 + zoomRatio);
+    const scaleY = imageLayer.scaleY() * (1 + zoomRatio);
+    imageLayer.scale({
+      x: scaleX,
+      y: scaleY,
+    });
+    drawLayer.scale({
+      x: scaleX,
+      y: scaleY,
     });
 
-    stage.x(stage.width() / 2);
-    stage.y(stage.height() / 2);
-    stage.offsetX(stage.width() / 2);
-    stage.offsetY(stage.height() / 2);
+    imageLayer.x(imageLayer.width() / 2);
+    imageLayer.y(imageLayer.height() / 2);
+    drawLayer.x(drawLayer.width() / 2);
+    drawLayer.y(drawLayer.height() / 2);
+    imageLayer.offsetX(imageLayer.width() / 2);
+    imageLayer.offsetY(imageLayer.height() / 2);
+    drawLayer.offsetX(drawLayer.width() / 2);
+    drawLayer.offsetY(drawLayer.height() / 2);
 
-    stage.draw();
+    imageLayer.draw();
+    drawLayer.draw();
   };
 
   onLeave = (drawEventParams: DrawEventParams) => {

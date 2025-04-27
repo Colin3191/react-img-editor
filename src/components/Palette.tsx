@@ -139,8 +139,8 @@ class Palette extends React.Component<PaletteProps> {
     this.historyStack = [];
     this.stage = new Konva.Stage({
       container: this.containerId,
-      width: width,
-      height: height,
+      width: this.props.containerWidth,
+      height: this.props.height,
     });
 
     getStage && getStage(this.resetStage(this.stage!));
@@ -236,17 +236,17 @@ class Palette extends React.Component<PaletteProps> {
     });
 
     this.stage.on('wheel', (e) => {
-      if (!this.props.enableZoom || !this.stage) return;
+      if (!this.props.enableZoom || !this.stage || !this.imageLayer) return;
       // stop default scrolling
       e.evt.preventDefault();
 
-      const oldScale = this.stage.scaleX();
-      const pointer = this.stage.getPointerPosition();
+      const oldScale = this.imageLayer.scaleX();
+      const pointer = this.imageLayer.getRelativePointerPosition();
       if (!pointer) return;
 
       const mousePointTo = {
-        x: (pointer.x - this.stage.x()) / oldScale,
-        y: (pointer.y - this.stage.y()) / oldScale,
+        x: (pointer.x - this.imageLayer.x()) / oldScale,
+        y: (pointer.y - this.imageLayer.y()) / oldScale,
       };
 
       // how to scale? Zoom in? Or zoom out?
@@ -263,13 +263,15 @@ class Palette extends React.Component<PaletteProps> {
           ? oldScale * (1 + this.props.zoomRatio)
           : oldScale / (1 + this.props.zoomRatio);
 
-      this.stage.scale({ x: newScale, y: newScale });
+      this.imageLayer.scale({ x: newScale, y: newScale });
+      this.drawLayer?.scale({ x: newScale, y: newScale });
 
       const newPos = {
         x: pointer.x - mousePointTo.x * newScale,
         y: pointer.y - mousePointTo.y * newScale,
       };
-      this.stage.position(newPos);
+      this.imageLayer.position(newPos);
+      this.drawLayer?.position(newPos);
     });
   };
 

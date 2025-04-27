@@ -148,8 +148,8 @@ export default class Crop extends Plugin {
   };
 
   onDrawStart = (drawEventParams: DrawEventParams) => {
-    const { stage, drawLayer } = drawEventParams;
-    const startPos = drawLayer.getRelativePointerPosition();
+    const { stage } = drawEventParams;
+    const startPos = stage.getPointerPosition();
     // 当鼠标移出 stage 时，不会触发 mouseup，重新回到 stage 时，会重新触发 onDrawStart，这里就是为了防止重新触发 onDrawStart
     if (this.isPaint || !startPos) return;
 
@@ -210,8 +210,8 @@ export default class Crop extends Plugin {
   };
 
   onDraw = (drawEventParams: DrawEventParams) => {
-    const { drawLayer } = drawEventParams;
-    const endPos = drawLayer.getRelativePointerPosition();
+    const { stage } = drawEventParams;
+    const endPos = stage.getPointerPosition();
 
     if (!this.isPaint || !endPos) return;
     if (document.getElementById(this.toolbarId)) return;
@@ -258,7 +258,7 @@ export default class Crop extends Plugin {
           width: this.getRectWidth(),
           height: this.getRectHeight(),
           pixelRatio,
-          mimeType: 'image/jpeg',
+          mimeType: 'image/png',
         });
         const imageObj = new Image();
         imageObj.onload = () => {
