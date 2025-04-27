@@ -7,6 +7,8 @@ import Toolbar from './components/Toolbar';
 import type Plugin from './plugins/Plugin';
 import PluginFactory from './plugins/PluginFactory';
 
+export type { PaletteRef };
+
 interface ReactImageEditorProps {
   width?: number;
   height?: number;
