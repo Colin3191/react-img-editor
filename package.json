@@ -13,10 +13,7 @@
       "types": "./dist/index.d.ts",
       "import": "./dist/index.js"
     },
-    "./dist/*.css": {
-      "import": "./dist/*.css",
-      "require": "./dist/*.css"
-    }
+    "./dist/index.css": "./dist/index.css"
   },
   "module": "./dist/index.js",
   "types": "./dist/index.d.ts",
