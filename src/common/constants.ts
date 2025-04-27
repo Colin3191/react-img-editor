@@ -11,3 +11,6 @@ export const transformerStyle = {
   anchorSize: 6,
   rotateAnchorOffset: 20,
 };
+export const drawLayerName = 'drawLayer';
+export const imageLayerName = 'imageLayer';
+export const imageElementName = 'imageElement';

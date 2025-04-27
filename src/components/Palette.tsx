@@ -1,7 +1,7 @@
 import Konva from 'konva';
 import React from 'react';
 import PubSub from '../common/PubSub';
-import { prefixCls } from '../common/constants';
+import { drawLayerName, imageElementName, imageLayerName, prefixCls } from '../common/constants';
 import type { DrawEventParams } from '../common/type';
 import { uuid } from '../common/utils';
 import { type EditorContextProps, withEditorContext } from './EditorContext';
@@ -109,9 +109,10 @@ class Palette extends React.Component<PaletteProps> {
       image: imageObj,
       width: this.canvasWidth,
       height: this.canvasHeight,
+      name: imageElementName,
     });
     this.imageElement = img;
-    this.imageLayer = new Konva.Layer();
+    this.imageLayer = new Konva.Layer({ name: imageLayerName });
     this.stage.add(this.imageLayer);
     this.imageLayer.setZIndex(0);
     this.imageLayer.add(img);
@@ -123,7 +124,7 @@ class Palette extends React.Component<PaletteProps> {
       this.canvasHeight,
     );
 
-    this.drawLayer = new Konva.Layer();
+    this.drawLayer = new Konva.Layer({ name: drawLayerName });
     this.stage.add(this.drawLayer);
     this.bindEvents();
     if (this.props.draggable) {
@@ -151,17 +152,18 @@ class Palette extends React.Component<PaletteProps> {
       image: imgObj,
       width: width,
       height: height,
+      name: imageElementName,
     });
 
     this.imageElement = img;
-    this.imageLayer = new Konva.Layer();
+    this.imageLayer = new Konva.Layer({ name: imageLayerName });
     this.stage.add(this.imageLayer);
     this.imageLayer.add(img);
     this.imageLayer.draw();
 
     this.imageData = this.generateImageData(imgObj, width, height);
 
-    this.drawLayer = new Konva.Layer();
+    this.drawLayer = new Konva.Layer({ name: drawLayerName });
     this.stage.add(this.drawLayer);
     this.bindEvents();
   };
@@ -356,28 +358,19 @@ class Palette extends React.Component<PaletteProps> {
   };
 
   toCanvas = () => {
-    let { width, height, x, y } = this.imageElement!.getClientRect();
-    if (x < 0) {
-      width = width + x;
-      x = 0;
-    }
-    if (y < 0) {
-      height = height + y;
-      y = 0;
-    }
-    if (x + width > this.stage!.width()) {
-      width = this.stage!.width() - x;
-    }
-    if (y + height > this.stage!.height()) {
-      height = this.stage!.height() - y;
-    }
-
-    const canvas = this.stage!.toCanvas({
-      pixelRatio: this.pixelRatio,
+    const cloneStage = this.stage!.clone();
+    const imageLayer = cloneStage.findOne(`.${imageLayerName}`);
+    const drawLayer = cloneStage.findOne(`.${drawLayerName}`);
+    const image = cloneStage.findOne(`.${imageElementName}`);
+    imageLayer?.scale({ x: 1, y: 1 });
+    drawLayer?.scale({ x: 1, y: 1 });
+    const { width, height, x, y } = image!.getClientRect();
+    const canvas = cloneStage.toCanvas({
       x,
       y,
       width,
       height,
+      pixelRatio: this.pixelRatio,
     });
     return canvas;
   };
