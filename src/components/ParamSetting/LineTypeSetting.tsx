@@ -1,5 +1,5 @@
-import React from 'react'
-import { prefixCls } from '../../common/constants'
+import React from 'react';
+import { prefixCls } from '../../common/constants';
 
 interface LineTypeSettingProps {
   value?: string;
@@ -20,5 +20,5 @@ export default function LineTypeSetting(props: LineTypeSettingProps) {
         onClick={() => props.onChange('dash')}
       />
     </>
-  )
+  );
 }

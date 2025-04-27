@@ -1,4 +1,4 @@
-export const prefixCls = 'react-img-editor'
+export const prefixCls = 'react-img-editor';
 export const transformerStyle = {
   centeredScaling: false,
   rotateEnabled: false,
@@ -10,4 +10,4 @@ export const transformerStyle = {
   anchorFill: '#FFF',
   anchorSize: 6,
   rotateAnchorOffset: 20,
-}
+};

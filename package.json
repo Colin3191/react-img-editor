@@ -1,25 +1,29 @@
 {
   "name": "@colin3191/react-img-editor",
   "version": "1.0.0-beta.7",
+  "private": false,
   "description": "图片编辑器（微信截图编辑 PRO 版）",
   "keywords": [
     "react-img-editor",
     "image-editor"
   ],
-  "main": "lib/index",
-  "module": "es/index",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
   "scripts": {
-    "start": "rc-tools run server",
-    "build": "rc-tools run build",
-    "gh-pages": "rc-tools run gh-pages",
-    "pub": "rc-tools run update-self && rc-tools run pub",
-    "lint": "eslint . --ext .js,jsx,.ts,.tsx",
-    "prepublish": "rc-tools run guard"
+    "build": "rslib build",
+    "check": "biome check --write",
+    "dev": "rslib build --watch",
+    "format": "biome format --write",
+    "storybook": "storybook dev"
   },
   "files": [
-    "es",
-    "lib",
-    "assets/*.css"
+    "dist"
   ],
   "repository": {
     "type": "git",
@@ -31,24 +35,35 @@
     "url": "https://github.com/YaoKaiLun/react-img-editor/issues"
   },
   "homepage": "https://github.com/YaoKaiLun/react-img-editor#readme",
-  "config": {
-    "port": 8012
-  },
   "devDependencies": {
-    "@types/pubsub-js": "^1.5.18",
-    "@types/react-dom": "^16.9.5",
-    "@typescript-eslint/eslint-plugin": "^2.17.0",
-    "@typescript-eslint/parser": "^2.17.0",
-    "eslint": "^6.8.0",
-    "eslint-plugin-import": "^2.20.0",
-    "eslint-plugin-react": "^7.18.0",
-    "eslint-plugin-react-hooks": "^2.4.0",
-    "typescript": "^4.9.5"
+    "@biomejs/biome": "^1.9.4",
+    "@rsbuild/core": "1.3.9",
+    "@rsbuild/plugin-less": "^1.2.2",
+    "@rsbuild/plugin-react": "^1.3.0",
+    "@rslib/core": "^0.6.7",
+    "@storybook/addon-essentials": "^8.6.12",
+    "@storybook/addon-interactions": "^8.6.12",
+    "@storybook/addon-links": "^8.6.12",
+    "@storybook/addon-onboarding": "^8.6.12",
+    "@storybook/blocks": "^8.6.12",
+    "@storybook/react": "^8.6.12",
+    "@storybook/test": "^8.6.12",
+    "@types/pubsub-js": "^1.8.6",
+    "@types/react": "^18.3.1",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "storybook": "^8.6.12",
+    "storybook-addon-rslib": "^1.0.1",
+    "storybook-react-rsbuild": "^1.0.1",
+    "typescript": "^5.8.3"
   },
   "dependencies": {
     "konva": "^9.3.20",
     "pubsub-js": "^1.8.0",
-    "rc-tools": "^9.6.1-alpha.1",
-    "rc-tooltip": "^4.0.0-alpha.3"
+    "rc-tooltip": "^4.2.3"
+  },
+  "peerDependencies": {
+    "react": ">=16.9.0",
+    "react-dom": ">=16.9.0"
   }
 }

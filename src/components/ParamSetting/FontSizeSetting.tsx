@@ -1,5 +1,5 @@
-import React from 'react'
-import { prefixCls } from '../../common/constants'
+import React from 'react';
+import { prefixCls } from '../../common/constants';
 
 interface FontSizeSettingProps {
   value?: number;
@@ -12,15 +12,21 @@ export default function FontSizeSetting(props: FontSizeSettingProps) {
       <button
         className={`${prefixCls}-font-size ${props.value === 12 ? prefixCls + '-font-size-activated' : ''}`}
         onClick={() => props.onChange(12)}
-      >小</button>
+      >
+        小
+      </button>
       <button
         className={`${prefixCls}-font-size ${props.value === 16 ? prefixCls + '-font-size-activated' : ''}`}
         onClick={() => props.onChange(16)}
-      >中</button>
+      >
+        中
+      </button>
       <button
         className={`${prefixCls}-font-size ${props.value === 20 ? prefixCls + '-font-size-activated' : ''}`}
         onClick={() => props.onChange(20)}
-      >大</button>
+      >
+        大
+      </button>
     </span>
-  )
+  );
 }

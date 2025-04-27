@@ -1,4 +1,8 @@
-import { DrawEventParams, PluginParamName, PluginParamValue } from '../common/type'
+import type {
+  DrawEventParams,
+  PluginParamName,
+  PluginParamValue,
+} from '../common/type';
 
 export default abstract class Plugin {
   abstract name: string;

@@ -1,6 +1,6 @@
-import Konva from 'konva'
-import PubSub from './PubSub'
-import { EditorContextProps } from '../components/EditorContext'
+import type Konva from 'konva';
+import type { EditorContextProps } from '../components/EditorContext';
+import type PubSub from './PubSub';
 
 export interface DrawEventParams extends EditorContextProps {
   event?: any;
@@ -14,7 +14,12 @@ export interface DrawEventParams extends EditorContextProps {
   pixelRatio: number;
   pubSub: InstanceType<typeof PubSub>;
 }
-export type PluginParamName = 'strokeWidth' | 'color' | 'fontSize' | 'lineType' | 'zoomRatio'
+export type PluginParamName =
+  | 'strokeWidth'
+  | 'color'
+  | 'fontSize'
+  | 'lineType'
+  | 'zoomRatio';
 export interface PluginParamValue {
   strokeWidth?: number;
   color?: string;

@@ -1,5 +1,5 @@
-import React from 'react'
-import { prefixCls } from '../../common/constants'
+import React from 'react';
+import { prefixCls } from '../../common/constants';
 
 interface StrokeWidthSettingProps {
   value?: number;
@@ -25,5 +25,5 @@ export default function StrokeWidthSetting(props: StrokeWidthSettingProps) {
         onClick={() => props.onChange(8)}
       />
     </>
-  )
+  );
 }

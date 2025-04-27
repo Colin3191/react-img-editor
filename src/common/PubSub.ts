@@ -1,16 +1,16 @@
-import pubSub from 'pubsub-js'
+import pubSub from 'pubsub-js';
 
 export default class PubSub {
-  id: string
+  id: string;
   constructor(id: string) {
-    this.id = id
+    this.id = id;
   }
 
   pub = (name: string, param?: any) => {
-    pubSub.publish(`${this.id}_${name}`, param)
-  }
+    pubSub.publish(`${this.id}_${name}`, param);
+  };
 
   sub = (name: string, callback: any) => {
-    pubSub.subscribe(`${this.id}_${name}`, callback)
-  }
+    pubSub.subscribe(`${this.id}_${name}`, callback);
+  };
 }

@@ -1,10 +1,10 @@
-import ColorSetting from './ColorSetting'
-import FontSizeSetting from './FontSizeSetting'
-import LineTypeSetting from './LineTypeSetting'
-import React from 'react'
-import StrokeWidthSetting from './StrokeWidthSetting'
-import { PluginParamName, PluginParamValue } from '../../common/type'
-import { prefixCls } from '../../common/constants'
+import React from 'react';
+import { prefixCls } from '../../common/constants';
+import type { PluginParamName, PluginParamValue } from '../../common/type';
+import ColorSetting from './ColorSetting';
+import FontSizeSetting from './FontSizeSetting';
+import LineTypeSetting from './LineTypeSetting';
+import StrokeWidthSetting from './StrokeWidthSetting';
 
 interface ParamSettingProps {
   paramNames: PluginParamName[];
@@ -14,19 +14,19 @@ interface ParamSettingProps {
 
 export default function ParamSetting(props: ParamSettingProps) {
   function handleStrokeWidthChange(strokeWidth: number) {
-    props.onChange({ ...props.paramValue, strokeWidth })
+    props.onChange({ ...props.paramValue, strokeWidth });
   }
 
   function handleLineTypeChange(lineType: 'solid' | 'dash') {
-    props.onChange({ ...props.paramValue, lineType })
+    props.onChange({ ...props.paramValue, lineType });
   }
 
   function handleColorChange(color: string) {
-    props.onChange({ ...props.paramValue, color })
+    props.onChange({ ...props.paramValue, color });
   }
 
   function handleFontSizeChange(fontSize: number) {
-    props.onChange({ ...props.paramValue, fontSize })
+    props.onChange({ ...props.paramValue, fontSize });
   }
 
   function renderParamComponent(paramName: PluginParamName) {
@@ -35,10 +35,12 @@ export default function ParamSetting(props: ParamSettingProps) {
         return (
           <StrokeWidthSetting
             key="stroke-width-setting"
-            value={props.paramValue ? props.paramValue['strokeWidth'] : undefined}
+            value={
+              props.paramValue ? props.paramValue['strokeWidth'] : undefined
+            }
             onChange={handleStrokeWidthChange}
           />
-        )
+        );
       case 'lineType':
         return (
           <LineTypeSetting
@@ -46,7 +48,7 @@ export default function ParamSetting(props: ParamSettingProps) {
             value={props.paramValue ? props.paramValue['lineType'] : undefined}
             onChange={handleLineTypeChange}
           />
-        )
+        );
       case 'color':
         return (
           <ColorSetting
@@ -54,7 +56,7 @@ export default function ParamSetting(props: ParamSettingProps) {
             value={props.paramValue ? props.paramValue['color'] : undefined}
             onChange={handleColorChange}
           />
-        )
+        );
       case 'fontSize':
         return (
           <FontSizeSetting
@@ -62,19 +64,15 @@ export default function ParamSetting(props: ParamSettingProps) {
             value={props.paramValue ? props.paramValue['fontSize'] : undefined}
             onChange={handleFontSizeChange}
           />
-        )
+        );
       default:
-        return null
+        return null;
     }
   }
 
   return (
     <div className={`${prefixCls}-param-setting`}>
-      {
-        props.paramNames.map(paramName => (
-          renderParamComponent(paramName)
-        ))
-      }
+      {props.paramNames.map((paramName) => renderParamComponent(paramName))}
     </div>
-  )
+  );
 }

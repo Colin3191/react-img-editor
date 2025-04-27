@@ -1,7 +1,7 @@
-import React from 'react'
-import Plugin from '../plugins/Plugin'
-import withContext from '../common/withContext'
-import { PluginParamValue } from '../common/type'
+import React from 'react';
+import type { PluginParamValue } from '../common/type';
+import withContext from '../common/withContext';
+import type Plugin from '../plugins/Plugin';
 
 export interface EditorContextProps {
   containerWidth: number;
@@ -21,5 +21,5 @@ export interface EditorContextProps {
   draggable: boolean;
 }
 
-export const EditorContext = React.createContext({} as EditorContextProps)
-export const withEditorContext = withContext<EditorContextProps>(EditorContext)
+export const EditorContext = React.createContext({} as EditorContextProps);
+export const withEditorContext = withContext<EditorContextProps>(EditorContext);

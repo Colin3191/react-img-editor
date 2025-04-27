@@ -1,10 +1,11 @@
-import Plugin from './plugins/Plugin'
-import PluginFactory from './plugins/PluginFactory'
-import Palette from './components/Palette'
-import React, { useEffect, useMemo, useState } from 'react'
-import Toolbar from './components/Toolbar'
-import { PluginParamValue } from './common/type'
-import { EditorContext } from './components/EditorContext'
+import type React from 'react';
+import { useEffect, useMemo, useState } from 'react';
+import type { PluginParamValue } from './common/type';
+import { EditorContext } from './components/EditorContext';
+import Palette from './components/Palette';
+import Toolbar from './components/Toolbar';
+import type Plugin from './plugins/Plugin';
+import PluginFactory from './plugins/PluginFactory';
 
 interface ReactImageEditorProps {
   width?: number;
@@ -24,89 +25,95 @@ interface ReactImageEditorProps {
 }
 
 export default function ReactImageEditor(props: ReactImageEditorProps) {
-  const [imageObj, setImageObj] = useState<HTMLImageElement | null>(null)
+  const [imageObj, setImageObj] = useState<HTMLImageElement | null>(null);
 
-
-  const pluginFactory = new PluginFactory()
-  const plugins = [...pluginFactory.plugins, ...props.plugins!]
-  let defaultPlugin: Plugin | null = null
-  let defaultParamValue = {}
-  for(let i = 0; i < plugins.length; i++) {
-    if (props.defaultPluginName && props.toolbar && plugins[i].name === props.defaultPluginName) {
-      defaultPlugin = plugins[i]
+  const pluginFactory = new PluginFactory();
+  const plugins = [...pluginFactory.plugins, ...props.plugins!];
+  let defaultPlugin: Plugin | null = null;
+  let defaultParamValue = {};
+  for (let i = 0; i < plugins.length; i++) {
+    if (
+      props.defaultPluginName &&
+      props.toolbar &&
+      plugins[i].name === props.defaultPluginName
+    ) {
+      defaultPlugin = plugins[i];
 
       if (defaultPlugin.defaultParamValue) {
-        defaultParamValue = defaultPlugin.defaultParamValue
+        defaultParamValue = defaultPlugin.defaultParamValue;
       }
 
-      break
+      break;
     }
   }
 
-  const [currentPlugin, setCurrentPlugin] = useState<Plugin | null>(defaultPlugin)
-  const [paramValue, setParamValue] = useState<PluginParamValue>(defaultParamValue)
+  const [currentPlugin, setCurrentPlugin] = useState<Plugin | null>(
+    defaultPlugin,
+  );
+  const [paramValue, setParamValue] =
+    useState<PluginParamValue>(defaultParamValue);
 
   const draggable = useMemo(() => {
     if (currentPlugin) {
-      return false
+      return false;
     }
-    return props.draggable
-  }, [currentPlugin, props.draggable])
+    return props.draggable;
+  }, [currentPlugin, props.draggable]);
 
   // 生成默认 toolbarItemConfig
-  const config: any = {}
-  plugins.map(plugin => {
+  const config: any = {};
+  plugins.map((plugin) => {
     if (plugin.name === 'repeal') {
-      config[plugin.name] = { disable: true }
+      config[plugin.name] = { disable: true };
     } else {
-      config[plugin.name] = { disable: false }
+      config[plugin.name] = { disable: false };
     }
-  })
+  });
 
-  const [toolbarItemConfig, setToolbarItemConfig] = useState(config)
+  const [toolbarItemConfig, setToolbarItemConfig] = useState(config);
 
   useEffect(() => {
-    const image = new Image()
+    const image = new Image();
     image.onload = () => {
-      setImageObj(image)
-    }
+      setImageObj(image);
+    };
     if (props.crossOrigin !== undefined) {
-      image.crossOrigin = props.crossOrigin
+      image.crossOrigin = props.crossOrigin;
     }
-    image.src = props.src
-  }, [props.src, props.crossOrigin])
+    image.src = props.src;
+  }, [props.src, props.crossOrigin]);
 
   function handlePluginChange(plugin: Plugin, toggle = false) {
-    setCurrentPlugin(prev => {
+    setCurrentPlugin((prev) => {
       if (!toggle) {
-        return plugin
+        return plugin;
       }
       if (prev?.name === plugin.name) {
-        return null
+        return null;
       }
-      return plugin
-    })
-    plugin.defaultParamValue && setParamValue(plugin.defaultParamValue)
+      return plugin;
+    });
+    plugin.defaultParamValue && setParamValue(plugin.defaultParamValue);
     if (plugin.disappearImmediately === true) {
       setTimeout(() => {
-        setCurrentPlugin(null)
-      })
+        setCurrentPlugin(null);
+      });
     }
   }
 
   function handlePluginParamValueChange(value: PluginParamValue) {
-    setParamValue(value)
+    setParamValue(value);
   }
 
   function updateToolbarItemConfig(config: any) {
-    setToolbarItemConfig(config)
+    setToolbarItemConfig(config);
   }
 
   const style = {
     width: props.width + 'px',
     height: props.height + 'px',
     ...props.style,
-  }
+  };
 
   return (
     <EditorContext.Provider
@@ -127,21 +134,19 @@ export default function ReactImageEditor(props: ReactImageEditorProps) {
       }}
     >
       <div className="react-img-editor" style={style}>
-        {
-          imageObj ? (
-            <>
-              <Palette
-                height={props.height! - 42}
-                imageObj={imageObj}
-                getStage={props.getStage}
-              />
-              <Toolbar />
-            </>
-          ) : null
-        }
+        {imageObj ? (
+          <>
+            <Palette
+              height={props.height! - 42}
+              imageObj={imageObj}
+              getStage={props.getStage}
+            />
+            <Toolbar />
+          </>
+        ) : null}
       </div>
     </EditorContext.Provider>
-  )
+  );
 }
 
 ReactImageEditor.defaultProps = {
@@ -150,9 +155,24 @@ ReactImageEditor.defaultProps = {
   style: {},
   plugins: [],
   toolbar: {
-    items: ['pen', 'eraser', 'arrow', 'rect', 'circle', 'mosaic', 'text', '|', 'repeal', 'download', 'crop', '|', 'zoomIn', 'zoomOut'],
+    items: [
+      'pen',
+      'eraser',
+      'arrow',
+      'rect',
+      'circle',
+      'mosaic',
+      'text',
+      '|',
+      'repeal',
+      'download',
+      'crop',
+      '|',
+      'zoomIn',
+      'zoomOut',
+    ],
   },
   zoomRatio: 0.05,
   enableZoom: false,
   draggable: false,
-} as Partial<ReactImageEditorProps>
+} as Partial<ReactImageEditorProps>;
