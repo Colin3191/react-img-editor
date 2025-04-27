@@ -13,7 +13,7 @@
       "types": "./dist/index.d.ts",
       "import": "./dist/index.js"
     },
-    "./dist/index.css": "./dist/index.css"
+    "./dist/assets/index.css": "./dist/assets/index.css"
   },
   "module": "./dist/index.js",
   "types": "./dist/index.d.ts",
