@@ -10,8 +10,11 @@
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
-      "import": "./dist/index.js",
-      "style": "./dist/assets/index.css"
+      "import": "./dist/index.js"
+    },
+    "./dist/*.css": {
+      "import": "./dist/*.css",
+      "require": "./dist/*.css"
     }
   },
   "module": "./dist/index.js",
