@@ -12,6 +12,8 @@ interface PaletteProps extends EditorContextProps {
   getStage?: (stage: any) => void;
 }
 
+export type PaletteRef = InstanceType<typeof Palette>;
+
 class Palette extends React.Component<PaletteProps> {
   containerId = prefixCls + uuid();
   canvasWidth: number;
@@ -93,15 +95,17 @@ class Palette extends React.Component<PaletteProps> {
 
     this.stage = new Konva.Stage({
       container: this.containerId,
-      width: this.canvasWidth,
-      height: this.canvasHeight,
+      width: this.props.containerWidth,
+      height: this.props.height,
+      // width: this.canvasWidth,
+      // height: this.canvasHeight,
     });
 
     getStage && getStage(this.resetStage(this.stage!));
 
     const img = new Konva.Image({
-      x: 0,
-      y: 0,
+      x: (this.props.containerWidth - this.canvasWidth) / 2,
+      y: (this.props.height - this.canvasHeight) / 2,
       image: imageObj,
       width: this.canvasWidth,
       height: this.canvasHeight,
@@ -214,8 +218,8 @@ class Palette extends React.Component<PaletteProps> {
     });
 
     this.stage.on('mousedown touchstart', (e: any) => {
-      if (currentPlugin && currentPlugin.onDrawStart) {
-        currentPlugin.onDrawStart(this.getDrawEventParams(e));
+      if (this.props.currentPlugin && this.props.currentPlugin.onDrawStart) {
+        this.props.currentPlugin.onDrawStart(this.getDrawEventParams(e));
       }
     });
 
@@ -226,8 +230,8 @@ class Palette extends React.Component<PaletteProps> {
     });
 
     this.stage.on('mouseup touchend', (e: any) => {
-      if (currentPlugin && currentPlugin.onDrawEnd) {
-        currentPlugin.onDrawEnd(this.getDrawEventParams(e));
+      if (this.props.currentPlugin && this.props.currentPlugin.onDrawEnd) {
+        this.props.currentPlugin.onDrawEnd(this.getDrawEventParams(e));
       }
     });
 
@@ -347,6 +351,33 @@ class Palette extends React.Component<PaletteProps> {
     };
 
     return drawEventParams;
+  };
+
+  toCanvas = () => {
+    let { width, height, x, y } = this.imageElement!.getClientRect();
+    if (x < 0) {
+      width = width + x;
+      x = 0;
+    }
+    if (y < 0) {
+      height = height + y;
+      y = 0;
+    }
+    if (x + width > this.stage!.width()) {
+      width = this.stage!.width() - x;
+    }
+    if (y + height > this.stage!.height()) {
+      height = this.stage!.height() - y;
+    }
+
+    const canvas = this.stage!.toCanvas({
+      pixelRatio: this.pixelRatio,
+      x,
+      y,
+      width,
+      height,
+    });
+    return canvas;
   };
 
   render() {
