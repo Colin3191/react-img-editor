@@ -6,7 +6,7 @@ import type { DrawEventParams } from '../common/type';
 import { uuid } from '../common/utils';
 import { type EditorContextProps, withEditorContext } from './EditorContext';
 
-interface PaletteProps extends EditorContextProps {
+export interface PaletteProps extends EditorContextProps {
   height: number;
   imageObj: HTMLImageElement;
   getStage?: (stage: any) => void;

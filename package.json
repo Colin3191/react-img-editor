@@ -3,10 +3,7 @@
   "version": "1.0.2",
   "private": false,
   "description": "图片编辑器（微信截图编辑 PRO 版）",
-  "keywords": [
-    "react-img-editor",
-    "image-editor"
-  ],
+  "keywords": ["react-img-editor", "image-editor"],
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
@@ -22,9 +19,7 @@
     "format": "biome format --write",
     "storybook": "storybook dev"
   },
-  "files": [
-    "dist"
-  ],
+  "files": ["dist"],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Colin3191/react-img-editor.git"
